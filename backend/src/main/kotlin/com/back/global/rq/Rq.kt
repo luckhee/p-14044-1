@@ -49,19 +49,11 @@ class Rq(
             ?.takeIf { it.isNotBlank() }
             ?: defaultValue
 
-    private fun cookieDomain(): String {
-        val domain = AppConfig.cookieDomain
-
-        if (domain == "localhost") return domain
-
-        return ".$domain"
-    }
-
     fun setCookie(name: String, value: String?) {
         val cookie = Cookie(name, value ?: "").apply {
             path = "/"
             isHttpOnly = true
-            domain = "localhost"
+            domain = AppConfig.cookieDomain
             secure = true
             setAttribute("SameSite", "Strict")
             maxAge = if (value.isNullOrBlank()) 0 else 60 * 60 * 24 * 365
